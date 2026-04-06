@@ -8,7 +8,7 @@ const PostManagement = () => {
   const [createPost] = useMutation(CREATE_POST);
   const [updatePost] = useMutation(UPDATE_POST);
   const [deletePost] = useMutation(DELETE_POST);
-  
+
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [currentPost, setCurrentPost] = useState<{ id: string; title: string; content: string; authorId: string } | null>(null);
@@ -52,11 +52,11 @@ const PostManagement = () => {
   };
 
   const openUpdateModal = (post: { id: string; title: string; content: string; author: { id: string } }) => {
-    setCurrentPost({ 
-      id: post.id, 
-      title: post.title, 
-      content: post.content, 
-      authorId: post.author.id 
+    setCurrentPost({
+      id: post.id,
+      title: post.title,
+      content: post.content,
+      authorId: post.author.id
     });
     setFormData({ title: post.title, content: post.content, authorId: post.author.id });
     setIsUpdateModalOpen(true);
@@ -66,7 +66,7 @@ const PostManagement = () => {
     <div className="section">
       <div className="flex justify-between items-center mb-4">
         <h2>文章管理</h2>
-        <button 
+        <button
           onClick={() => setIsCreateModalOpen(true)}
           className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
         >
@@ -90,13 +90,13 @@ const PostManagement = () => {
               <td className="border p-2">{post.title}</td>
               <td className="border p-2">{post.author.name}</td>
               <td className="border p-2">
-                <button 
+                <button
                   onClick={() => openUpdateModal(post)}
                   className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded mr-2"
                 >
                   修改
                 </button>
-                <button 
+                <button
                   onClick={() => handleDeletePost(post.id)}
                   className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
                 >
@@ -110,24 +110,26 @@ const PostManagement = () => {
 
       {/* 创建文章模态框 */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="create-post-title">
           <div className="bg-white p-6 rounded-lg w-96">
-            <h3 className="text-xl mb-4">创建文章</h3>
+            <h3 id="create-post-title" className="text-xl mb-4">创建文章</h3>
             <form onSubmit={handleCreatePost}>
               <div className="mb-4">
-                <label className="block mb-2">标题</label>
-                <input 
-                  type="text" 
-                  value={formData.title} 
+                <label htmlFor="post-title" className="block mb-2">标题</label>
+                <input
+                  id="post-title"
+                  type="text"
+                  value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   className="w-full border p-2"
                   required
                 />
               </div>
               <div className="mb-4">
-                <label className="block mb-2">内容</label>
-                <textarea 
-                  value={formData.content} 
+                <label htmlFor="post-content" className="block mb-2">内容</label>
+                <textarea
+                  id="post-content"
+                  value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                   className="w-full border p-2"
                   rows={4}
@@ -135,9 +137,10 @@ const PostManagement = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block mb-2">作者</label>
-                <select 
-                  value={formData.authorId} 
+                <label htmlFor="post-author" className="block mb-2">作者</label>
+                <select
+                  id="post-author"
+                  value={formData.authorId}
                   onChange={(e) => setFormData({ ...formData, authorId: e.target.value })}
                   className="w-full border p-2"
                   required
@@ -149,15 +152,15 @@ const PostManagement = () => {
                 </select>
               </div>
               <div className="flex justify-end">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => setIsCreateModalOpen(false)}
                   className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mr-2"
                 >
                   取消
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
                 >
                   创建
@@ -170,24 +173,26 @@ const PostManagement = () => {
 
       {/* 更新文章模态框 */}
       {isUpdateModalOpen && currentPost && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="update-post-title">
           <div className="bg-white p-6 rounded-lg w-96">
-            <h3 className="text-xl mb-4">更新文章</h3>
+            <h3 id="update-post-title" className="text-xl mb-4">更新文章</h3>
             <form onSubmit={handleUpdatePost}>
               <div className="mb-4">
-                <label className="block mb-2">标题</label>
-                <input 
-                  type="text" 
-                  value={formData.title} 
+                <label htmlFor="update-title" className="block mb-2">标题</label>
+                <input
+                  id="update-title"
+                  type="text"
+                  value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   className="w-full border p-2"
                   required
                 />
               </div>
               <div className="mb-4">
-                <label className="block mb-2">内容</label>
-                <textarea 
-                  value={formData.content} 
+                <label htmlFor="update-content" className="block mb-2">内容</label>
+                <textarea
+                  id="update-content"
+                  value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                   className="w-full border p-2"
                   rows={4}
@@ -195,12 +200,12 @@ const PostManagement = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block mb-2">作者</label>
-                <select 
-                  value={formData.authorId} 
+                <label htmlFor="update-author" className="block mb-2">作者</label>
+                <select
+                  id="update-author"
+                  disabled value={formData.authorId}
                   onChange={(e) => setFormData({ ...formData, authorId: e.target.value })}
                   className="w-full border p-2"
-                  disabled
                 >
                   {usersData?.users.map(user => (
                     <option key={user.id} value={user.id}>{user.name}</option>
@@ -208,15 +213,15 @@ const PostManagement = () => {
                 </select>
               </div>
               <div className="flex justify-end">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => setIsUpdateModalOpen(false)}
                   className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mr-2"
                 >
                   取消
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
                 >
                   更新

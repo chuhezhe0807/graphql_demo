@@ -36,8 +36,8 @@ const PostList = () => {
       
       {postData?.post && (
         <div className="post-details">
-          <h3>{postData.post.title}</h3>
-          <p>{postData.post.content}</p>
+          <h3>标题：{postData.post.title}</h3>
+          <p>正文：{postData.post.content}</p>
           <p>作者: {postData.post.author.name} ({postData.post.author.email})</p>
         </div>
       )}

@@ -7,7 +7,7 @@ const UserManagement = () => {
   const [createUser] = useMutation(CREATE_USER);
   const [updateUser] = useMutation(UPDATE_USER);
   const [deleteUser] = useMutation(DELETE_USER);
-  
+
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{ id: string; name: string; email: string } | null>(null);
@@ -60,7 +60,7 @@ const UserManagement = () => {
     <div className="section">
       <div className="flex justify-between items-center mb-4">
         <h2>用户管理</h2>
-        <button 
+        <button
           onClick={() => setIsCreateModalOpen(true)}
           className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
         >
@@ -84,13 +84,13 @@ const UserManagement = () => {
               <td className="border p-2">{user.name}</td>
               <td className="border p-2">{user.email}</td>
               <td className="border p-2">
-                <button 
+                <button
                   onClick={() => openUpdateModal(user)}
                   className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded mr-2"
                 >
                   修改
                 </button>
-                <button 
+                <button
                   onClick={() => handleDeleteUser(user.id)}
                   className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
                 >
@@ -104,40 +104,42 @@ const UserManagement = () => {
 
       {/* 创建用户模态框 */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="create-user-title">
           <div className="bg-white p-6 rounded-lg w-96">
-            <h3 className="text-xl mb-4">创建用户</h3>
+            <h3 id="create-user-title" className="text-xl mb-4">创建用户</h3>
             <form onSubmit={handleCreateUser}>
               <div className="mb-4">
-                <label className="block mb-2">姓名</label>
-                <input 
-                  type="text" 
-                  value={formData.name} 
+                <label htmlFor="create-name" className="block mb-2">姓名</label>
+                <input
+                  id="create-name"
+                  type="text"
+                  value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full border p-2"
                   required
                 />
               </div>
               <div className="mb-4">
-                <label className="block mb-2">邮箱</label>
-                <input 
-                  type="email" 
-                  value={formData.email} 
+                <label htmlFor="create-email" className="block mb-2">邮箱</label>
+                <input
+                  id="create-email"
+                  type="email"
+                  value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full border p-2"
                   required
                 />
               </div>
               <div className="flex justify-end">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => setIsCreateModalOpen(false)}
                   className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mr-2"
                 >
                   取消
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
                 >
                   创建
@@ -150,40 +152,42 @@ const UserManagement = () => {
 
       {/* 更新用户模态框 */}
       {isUpdateModalOpen && currentUser && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="update-user-title">
           <div className="bg-white p-6 rounded-lg w-96">
-            <h3 className="text-xl mb-4">更新用户</h3>
+            <h3 id="update-user-title" className="text-xl mb-4">更新用户</h3>
             <form onSubmit={handleUpdateUser}>
               <div className="mb-4">
-                <label className="block mb-2">姓名</label>
-                <input 
-                  type="text" 
-                  value={formData.name} 
+                <label htmlFor="update-name" className="block mb-2">姓名</label>
+                <input
+                  id="update-name"
+                  type="text"
+                  value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full border p-2"
                   required
                 />
               </div>
               <div className="mb-4">
-                <label className="block mb-2">邮箱</label>
-                <input 
-                  type="email" 
-                  value={formData.email} 
+                <label htmlFor="update-email" className="block mb-2">邮箱</label>
+                <input
+                  id="update-email"
+                  type="email"
+                  value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full border p-2"
                   required
                 />
               </div>
               <div className="flex justify-end">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => setIsUpdateModalOpen(false)}
                   className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mr-2"
                 >
                   取消
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
                 >
                   更新

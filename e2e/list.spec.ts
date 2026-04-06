@@ -4,33 +4,43 @@ import { test } from './fixture';
 test.beforeEach(async ({ page }) => {
   page.setViewportSize({ width: 1280, height: 800 });
   await page.goto('/');
-  await page.waitForLoadState('networkidle');
+  // 确保页面标题可见，确认页面已加载
+  await expect(page.locator('h1')).toBeVisible();
 });
 
 test.describe('列表展示测试 (Midscene)', () => {
-  test('查看用户列表及详情', async ({ page, ai, aiAssert, aiQuery }) => {
-    // 1. 获取并点击第一个用户
-    const firstUserName = await aiQuery('string, 获取用户列表中的第一个用户的名字');
-    console.log('第一个用户:', firstUserName);
-    
-    await ai(`点击用户列表中的 "${firstUserName}"`);
-    
-    // 2. 滚动并验证详情区域
-    // 详情区域通常出现在列表下方，可能需要滚动才能完整显示
-    await ai('向下滚动以确保能看到详情区域');
-    await aiAssert(`详情区域显示了 "${firstUserName}" 的详细信息，包括邮箱和发布的文章`);
+  test('查看用户列表及详情', async ({ page, aiAssert }) => {
+    // 1. 混合模式：使用 Playwright 快速点击第一个用户
+    const firstUser = page.locator('.section:has-text("用户列表") ul.list li').first();
+    const userName = (await firstUser.textContent())?.split('(')[0].trim();
+    await firstUser.click();
+
+    // 2. 原生验证：检查详情区域是否包含预期文本
+    const details = page.locator('.user-details');
+    await details.scrollIntoViewIfNeeded();
+    await expect(details).toBeVisible();
+    await expect(details).toContainText(userName || '');
+    await expect(details.locator('h4')).toContainText('发布的文章');
+
+    // 3. 使用ai验证
+    await aiAssert('检查详情区域是否包含 "发布的文章"');
   });
 
-  test('查看文章列表及详情', async ({ page, ai, aiAssert, aiQuery }) => {
-    // 1. 获取并点击第一篇文章
-    const firstPostTitle = await aiQuery('string, 获取文章列表中的第一个文章的标题');
-    console.log('第一篇文章:', firstPostTitle);
-    
-    await ai(`点击文章列表中的 "${firstPostTitle}"`);
-    
-    // 2. 滚动并验证详情内容
-    await ai('向下滚动到详情展示区域');
-    await aiAssert(`详情区域显示了文章 "${firstPostTitle}" 的正文内容`);
+  test('查看文章列表及详情', async ({ page, aiAssert }) => {
+    // 1. 混合模式：使用 Playwright 快速点击第一篇文章
+    const firstPost = page.locator('.section:has-text("文章列表") ul.list li').first();
+    const postTitle = (await firstPost.textContent())?.split('(作者:')[0].trim();
+    await firstPost.click();
+
+    // 2. 原生验证：检查详情区域是否包含正文内容
+    const details = page.locator('.post-details');
+    await details.scrollIntoViewIfNeeded();
+    await expect(details).toBeVisible();
+    await expect(details).toContainText(postTitle || '');
+    await expect(details).toContainText('正文：');
+
+    // 3. 使用ai验证
+    await aiAssert('检查详情区域是否包含正文内容');
   });
 });
 

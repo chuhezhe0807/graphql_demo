@@ -1,7 +1,8 @@
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { gql } from 'graphql-tag';
- 
+import { NextRequest } from 'next/server';
+
 // 模拟数据
 let users = [
   { id: '1', name: 'Alice', email: 'alice@example.com' },
@@ -14,7 +15,7 @@ let posts = [
   { id: '2', title: 'Second Post', content: 'GraphQL is awesome', authorId: '2' },
   { id: '3', title: 'Third Post', content: 'Next.js + TypeScript', authorId: '3' },
 ];
- 
+
 // 定义Schema
 const typeDefs = gql`
   type User {
@@ -50,7 +51,7 @@ const typeDefs = gql`
     deletePost(id: ID!): Boolean
   }
 `;
- 
+
 // 定义Resolvers
 const resolvers = {
   Query: {
@@ -98,7 +99,7 @@ const resolvers = {
       }
       return true;
     },
-    
+
     // 文章相关操作
     createPost: (_: any, { title, content, authorId }: { title: string; content: string; authorId: string }) => {
       const user = users.find(u => u.id === authorId);
@@ -127,14 +128,20 @@ const resolvers = {
     },
   },
 };
- 
+
 // 创建Apollo Server
 const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
- 
+
 // 导出Next.js API handler
-const handler = startServerAndCreateNextHandler(server);
- 
-export { handler as GET, handler as POST };
+const handler = startServerAndCreateNextHandler<NextRequest>(server);
+
+export async function GET(request: NextRequest) {
+  return handler(request);
+}
+
+export async function POST(request: NextRequest) {
+  return handler(request);
+}
